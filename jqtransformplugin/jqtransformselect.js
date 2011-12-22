@@ -17,7 +17,37 @@
  * jqTransforms select only
  * Use: This is supposed to be executed once on the widget container, and it will transform all the selects.
  * This component fires change event on change, so subscribe to that to get notified.
- *  
+ *   $("select").change(function(e){
+ *	    var value= $(this).val();
+ *		alert("Value Selected = "+value);					
+ *	});
+ ******************************************** */
+ 
+/*
+ *
+ * jqTransform
+ * by mathieu vilaplana mvilaplana@dfc-e.com
+ * Designer ghyslain armand garmand@dfc-e.com
+ *
+ *
+ * Version 1.0 25.09.08
+ * Version 1.1 06.08.09
+ * Add event click on Checkbox and Radio
+ * Auto calculate the size of a select element
+ * Can now, disabled the elements
+ * Correct bug in ff if click on select (overflow=hidden)
+ * No need any more preloading !!
+ * 
+ * extended by: Hitesh Ubharani hiteshubharani@gmail.com
+ * jqTransforms select only
+ * Use: This is supposed to be executed once on the widget container, and it will transform all the selects.
+ * This component fires change event on change, so subscribe to that to get notified.
+ *   $("select").change(function(e){
+ *	    var value= $(this).val();
+ *		alert("Value Selected = "+value);					
+ *	});
+ *Also storing the selected value and text in the wrapper div using jquery 'data api', as val and text
+ *So do a $(wrapper div).data('val') and .('text') to retrieve selected value and text
  ******************************************** */
  
 (function($){
@@ -131,10 +161,12 @@
           if(prevIndex != $select[0].selectedIndex)
             $select.change();
           $('span:eq(0)', $wrapper).html($(this).html());
+        //experimental storing val and text on the wrapper div to be able to return
+          $wrapper.data('val', $select.val()).data('text', $(this).html());
           $ul.trigger('collapse');
           return false;
         });
-
+        
         /* Set the default */
         $('a:eq('+ this.selectedIndex +')', $ul).click();
         var oLinkOpen = $("a.jqTransformSelectOpen",$wrapper)
@@ -142,7 +174,7 @@
         oLabel && oLabel.click(function(){oLinkOpen.trigger('click');});
         this.oLabel = oLabel;
         
-        /* Apply the click handler to the Open */
+        /* Apply the click handler to	 the Open */
         oLinkOpen
           .click(function(){
 
@@ -232,12 +264,6 @@
 		var selfForm = $(this);
 		if(selfForm.hasClass('jqtransformdone')) {return;}
 		selfForm.addClass('jqtrans0formdone');
-	      
-	     // $('input:submit, input:reset, input[type="button"]', this).jqTransInputButton();      
-	     // $('input:text, input:password', this).jqTransInputText();     
-	      // $('input:checkbox', this).jqTransCheckBox();
-	      // $('input:radio', this).jqTransRadio();
-	      // $('textarea', this).jqTransTextarea();
 		$('select', this).jqTransSelect()
 	
 	    selfForm.bind('reset', function() {
@@ -252,4 +278,4 @@
   };/* End the Plugin */
 
 })(jQuery);
-           
+                      
